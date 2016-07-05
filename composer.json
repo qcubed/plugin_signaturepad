@@ -1,0 +1,16 @@
+{
+    "name": "qcubed/plugin_signaturepad",
+    "description": "QCubed wrapper for the HTML5 canvas based smooth signature drawing http://szimek.github.io/signature_pad/.",
+    "type": "qcubed-plugin",
+    "keywords": ["qcubed", "signature", "digital signature"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": { "QCubed\\Plugin\\": "includes/" }
+    },
+    "extra": {
+        "examples": ["signaturepad.php"]
+    }
+}
