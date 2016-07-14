@@ -6,28 +6,34 @@
 	* @property string $Data The data:image/png;base64 image data
 	*/
 	namespace QCubed\Plugin;
-	use \QType, \QApplication, \QInvalidCastException, \QCallerException;
+	use \QType, \QApplication, \QInvalidCastException, \QCallerException, \QBlockControl;
 
 	class QSignaturePadGen extends QBlockControl {
 		/** @var string HTML tag to be used by the control (such as div or span) */
 		protected $strTagName = 'canvas';
+		/**
+		 * @var string The data:image/png;base64 image data
+		 */
+		protected $strData;
 		
 		protected function getJsObjectString() {
 			$strControlId = $this->ControlId;
-			$strId = "SignaturePad_" . $this->ControlId;
+			$strId = "SignaturePad_" . $strControlId;
 			$strCode = <<<JS
 ((function(){
-	if ("undefined" === typeof window["$strId"]) {
-		var canvas = document.getElementById("$strId");
-		var signaturePad = new SignaturePad(canvas);
-		window["$strId"] = signaturePad;
+	var id = "$strId";
+	if ("undefined" === typeof window[id]) {
+		var canvas = document.getElementById("$strControlId");
+		var signaturePad = new SignaturePad(canvas, {backgroundColor: "rgb(255,255,255)"});
+		window[id] = signaturePad;
 		signaturePad.onEnd = function() {
-			qcubed.recordControlModification("$strControlId", "_Value", window["$strId"].toDataURL());
+			qcubed.recordControlModification("$strControlId", "_Value", window[id].toDataURL());
 		}
 	}
-	return window["$strId"];
+	return window[id];
 })())
 JS;
+			return $strCode;
 		}
 		
 		protected function ExecuteFunction($strFunctionName /*, ... */) {
