@@ -6,7 +6,7 @@
 	* @property string $Data The data:image/png;base64 image data
 	*/
 	namespace QCubed\Plugin;
-	use \QType, \QApplication, \QInvalidCastException, \QCallerException, \QBlockControl;
+	use \QType, \QApplication, \QInvalidCastException, \QCallerException, \QBlockControl, \JavaScriptHelper;
 
 	class QSignaturePadEndEvent extends \QEvent {
 		const EventName = 'qsigend';
@@ -48,12 +48,12 @@ JS;
 			$strArgsArray = array();
 			if ($args) {
 				foreach ($args as $a) {
-					$strArgsArray[] = JavaScriptHelper::toJsObject();
+					$strArgsArray[] = JavaScriptHelper::toJsObject($a);
 				}
 			}
 			$strArgs = "";
 			if ($strArgsArray) {
-				$strArgs = ", " . implode(",", $strArgsArray);
+				$strArgs = implode(",", $strArgsArray);
 			}
 			$strCode = $strJsObjectCode . "." . $strFunctionName . "(" . $strArgs . ")";
 			QApplication::ExecuteJavaScript($strCode);
