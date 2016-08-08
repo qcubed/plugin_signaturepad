@@ -8,6 +8,10 @@
 	namespace QCubed\Plugin;
 	use \QType, \QApplication, \QInvalidCastException, \QCallerException, \QBlockControl;
 
+	class QSignaturePadEndEvent extends \QEvent {
+		const EventName = 'qsigend';
+	}
+
 	class QSignaturePadGen extends QBlockControl {
 		/** @var string HTML tag to be used by the control (such as div or span) */
 		protected $strTagName = 'canvas';
@@ -28,6 +32,7 @@
 		window[id] = signaturePad;
 		signaturePad.onEnd = function() {
 			qcubed.recordControlModification("$strControlId", "_Value", window[id].toDataURL());
+			\$j('#{$strControlId}').trigger('qsigend');
 		}
 	}
 	return window[id];
